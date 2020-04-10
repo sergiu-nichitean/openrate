@@ -1,0 +1,129 @@
+<%= link_to 'New Broadcast', new_broadcast_path, class: 'btn btn-success float-right' %>
+
+<h1>Broadcasts</h1>
+
+<% unless @sending.empty? %>
+  <h2>Sending</h2>
+
+  <div class="responsive-table">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Sent at</th>
+          <th>Open rate</th>
+          <th>Click rate</th>
+          <th>Bounce rate</th>
+          <th colspan="2"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @sending.each do |broadcast| %>
+          <tr>
+            <td><%= broadcast.message.subject %></td>
+            <td><%= broadcast.send_at %></td>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+            <td><%= link_to 'View Details', broadcast_path(broadcast) %></td>
+            <td><%= link_to 'Duplicate', "#duplicate-#{broadcast.id}" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<% unless @drafts.empty? %>
+  <h2>Drafts</h2>
+
+  <div class="responsive-table">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Date created</th>
+          <th>Last updated</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @drafts.each do |broadcast| %>
+          <tr>
+            <td><%= broadcast.message.subject %></td>
+            <td><%= broadcast.created_at %></td>
+            <td><%= broadcast.updated_at %></td>
+            <td><%= link_to 'Edit', edit_broadcast_path(broadcast) %></td>
+            <td><%= link_to 'Duplicate', '#' %></td>
+            <td><%= link_to 'Delete', broadcast, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<% unless @scheduled.empty? %>
+  <h2>Scheduled</h2>
+
+  <div class="responsive-table">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Send at</th>
+          <th>Last updated</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @scheduled.each do |broadcast| %>
+          <tr>
+            <td><%= broadcast.message.subject %></td>
+            <td><%= broadcast.send_at %></td>
+            <td><%= broadcast.updated_at %></td>
+            <td><%= link_to 'Edit', edit_broadcast_path(broadcast) %></td>
+            <td><%= link_to 'Duplicate', '#' %></td>
+            <td><%= link_to 'Delete', broadcast, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<% unless @sent.empty? %>
+  <h2>History</h2>
+
+  <div class="responsive-table">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Sent at</th>
+          <th>Open rate</th>
+          <th>Click rate</th>
+          <th>Bounce rate</th>
+          <th colspan="2"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @sent.each do |broadcast| %>
+          <tr>
+            <td><%= broadcast.message.subject %></td>
+            <td><%= broadcast.send_at %></td>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+            <td><%= link_to 'View Details', broadcast_path(broadcast) %></td>
+            <td><%= link_to 'Duplicate', "#duplicate-#{broadcast.id}" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

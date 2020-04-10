@@ -1,0 +1,7 @@
+<ul class="nav nav-pills flex-column">
+  <% @main_menu.each do |key, name| %>
+    <li class="nav-item">
+      <%= link_to name, eval("#{key}_path"), method: key == :destroy_user_session ? :delete : nil, class: "nav-link#{' active' if @active_menu == key}" %>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,68 @@
+<%= form_with(model: current_user, url: settings_path, local: true) do |form| %>
+  <% if current_user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(current_user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% current_user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :smtp_address, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :smtp_address, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :smtp_port, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :smtp_port, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :smtp_user_name, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :smtp_user_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :smtp_password, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :smtp_password, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :default_from, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :default_from, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :company_name, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :company_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :email_footer, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_area :email_footer, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <%= form.submit 'Save', class: 'btn btn-success float-right' %>
+    </div>
+  </div>
+<% end %>

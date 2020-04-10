@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  message: one
+  subscriber: one
+  broadcast: one
+  status: 1
+  error: MyText
+  sent_at: 2019-08-08 19:34:20
+
+two:
+  message: two
+  subscriber: two
+  broadcast: two
+  status: 1
+  error: MyText
+  sent_at: 2019-08-08 19:34:20

@@ -1,0 +1,127 @@
+class SubscribersController < ApplicationController
+  before_action :set_subscriber, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: %i[
+    unsubscribe cancel_unsubscribe submit_unsubscribe
+  ]
+
+  # GET /subscribers
+  # GET /subscribers.json
+  def index
+    @subscribers = current_user.subscribers
+    @active_menu = :subscribers
+  end
+
+  # GET /subscribers/1
+  # GET /subscribers/1.json
+  def show
+  end
+
+  # GET /subscribers/new
+  def new
+    @subscriber = Subscriber.new
+  end
+
+  # GET /subscribers/1/edit
+  def edit
+  end
+
+  # POST /subscribers
+  # POST /subscribers.json
+  def create
+    @subscriber = Subscriber.new(subscriber_params)
+
+    respond_to do |format|
+      if @subscriber.save
+        format.html { redirect_to @subscriber, notice: 'Subscriber was successfully created.' }
+        format.json { render :show, status: :created, location: @subscriber }
+      else
+        format.html { render :new }
+        format.json { render json: @subscriber.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /subscribers/1
+  # PATCH/PUT /subscribers/1.json
+  def update
+    respond_to do |format|
+      if @subscriber.update(subscriber_params)
+        format.html { redirect_to @subscriber, notice: 'Subscriber was successfully updated.' }
+        format.json { render :show, status: :ok, location: @subscriber }
+      else
+        format.html { render :edit }
+        format.json { render json: @subscriber.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /subscribers/1
+  # DELETE /subscribers/1.json
+  def destroy
+    @subscriber.destroy
+    respond_to do |format|
+      format.html { redirect_to subscribers_url, notice: 'Subscriber was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def unsubscribe
+    @subscriber = Subscriber.where(unsubscribe_token: params[:token]).first
+    render layout: false
+  end
+
+  def cancel_unsubscribe
+    render layout: false
+  end
+
+  def submit_unsubscribe
+    @subscriber = Subscriber.where(unsubscribe_token: params[:token]).first
+    @subscriber.destroy
+    render layout: false
+  end
+
+  def import; end
+
+  def submit_import
+    if params[:subscriber_feed]
+      validate_and_start_import(params[:subscriber_feed].tempfile.path)
+    else
+      redirect_to import_subscribers_path, alert: 'Please attach a valid CSV file.'
+    end
+  end
+
+  def import_status
+    @import = SubscriberImport.find(params[:id])
+    respond_to do |format|
+      format.html { render :import_status }
+      format.json do
+        render json: {
+          status: @import.status,
+          errors: @import.error_messages
+        }
+      end
+    end
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_subscriber
+    @subscriber = Subscriber.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def subscriber_params
+    params.require(:subscriber).permit(:first_name, :last_name, :email, :user_id)
+  end
+
+  def validate_and_start_import(file_path)
+    import = current_user.subscriber_imports.create(file_path: file_path)
+    if (error = import.file_validation_error)
+      redirect_to import_subscribers_path, alert: error
+    else
+      import.start_import
+      redirect_to action: :import_status, id: import.id
+    end
+  end
+end

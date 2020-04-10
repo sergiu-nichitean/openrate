@@ -1,0 +1,2 @@
+class SequenceFilter < Filter
+end

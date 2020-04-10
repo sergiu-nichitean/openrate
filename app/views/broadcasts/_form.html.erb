@@ -1,0 +1,92 @@
+<%= form_with(model: broadcast, local: true, id: 'broadcast_form') do |form| %>
+  <% if broadcast.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(broadcast.errors.count, "error") %> prohibited this broadcast from being saved:</h2>
+
+      <ul>
+        <% broadcast.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.fields_for :message do |message_form|  %>
+    <div class="form-group row">
+      <%= message_form.label :from, class: 'col-sm-2 col-form-label' %>
+      <div class="col-sm-10">
+        <%= message_form.text_field :from, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <%= message_form.label :subject, class: 'col-sm-2 col-form-label' %>
+      <div class="col-sm-10">
+        <%= message_form.text_field :subject, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= message_form.label :content %>
+      <%= message_form.text_area :content, class: 'form-control', rows: 10 %>
+    </div>
+  <% end %>
+
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0">Schedule</legend>
+      <div class="col-sm-10 broadcast-schedule">
+        <% ['to_send', 'scheduled'].each do |value| %>
+          <div class="form-check">
+            <%= form.radio_button :status, value, class: 'form-check-input', checked: (value == 'to_send') %>
+            <%= label_tag :broadcast_status, (value == 'to_send' ? 'Send now' : 'Schedule for later'), for: "broadcast_status_#{value}", class: 'form-check-label' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-group row sent-at-field" style="display: none">
+    <%= form.label :send_at, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-4">
+      <%= form.text_field :send_at, class: 'form-control' %>
+    </div>
+  </div>
+
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0">Send to</legend>
+      <div class="col-sm-10 broadcast-audience">
+        <p>
+          <% if broadcast.filters.empty? %>
+            <span class="btn btn-outline-secondary">Everyone</span>
+          <% else %>
+            <%= broadcast.filters.map { |f| "<a href=\"javascript:void(0)\" onclick=\"deleteFilter(#{broadcast.id}, #{f.id})\" class=\"btn btn-outline-secondary\">#{f.description} &times;</a>" }.join('<span class="ml-2 mr-2">AND</span>').html_safe %>
+          <% end %>
+          <span class="ml-2 mr-2">=</span>
+          <span class="btn btn-outline-success"><%= broadcast.subscribers.count %> people</span>
+        </p>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#filter_modal">
+          Narrow Audience
+        </button>
+      </div>
+    </div>
+  </fieldset>
+
+  <%= form.hidden_field :is_draft, value: '1' %>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <%= link_to 'Back', broadcasts_path, class: 'btn btn-secondary' %>
+      </div>
+      <div class="col-sm-6">
+        <%= link_to 'Send Broadcast Now', '#', id: 'send_or_schedule', class: 'ml-2 btn btn-success float-right' %>
+        <%= link_to 'Send Test', '#', id: 'send_test', class: 'ml-2 btn btn-secondary float-right' %>
+        <%= form.submit 'Save as Draft', class: 'btn btn-info float-right' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'filter_modal' %>

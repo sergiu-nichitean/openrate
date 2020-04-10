@@ -1,0 +1,82 @@
+<%= form_with(model: user, local: true) do |form| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :encrypted_password %>
+    <%= form.text_field :encrypted_password %>
+  </div>
+
+  <div class="field">
+    <%= form.label :reset_password_token %>
+    <%= form.text_field :reset_password_token %>
+  </div>
+
+  <div class="field">
+    <%= form.label :reset_password_sent_at %>
+    <%= form.datetime_select :reset_password_sent_at %>
+  </div>
+
+  <div class="field">
+    <%= form.label :remember_created_at %>
+    <%= form.datetime_select :remember_created_at %>
+  </div>
+
+  <div class="field">
+    <%= form.label :smtp_address %>
+    <%= form.text_field :smtp_address %>
+  </div>
+
+  <div class="field">
+    <%= form.label :smtp_port %>
+    <%= form.number_field :smtp_port %>
+  </div>
+
+  <div class="field">
+    <%= form.label :smtp_user_name %>
+    <%= form.text_field :smtp_user_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :smtp_password %>
+    <%= form.text_field :smtp_password %>
+  </div>
+
+  <div class="field">
+    <%= form.label :use_zapier %>
+    <%= form.check_box :use_zapier %>
+  </div>
+
+  <div class="field">
+    <%= form.label :api_key %>
+    <%= form.text_field :api_key %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

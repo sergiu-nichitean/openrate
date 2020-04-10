@@ -1,0 +1,33 @@
+<h1>Subscribers</h1>
+
+<%= link_to 'Import', import_subscribers_path %> |
+<%= link_to 'Export', '#' %>
+
+<br>
+
+<div class="responsive-table">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <td>Tags</td>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @subscribers.each do |subscriber| %>
+        <tr>
+          <td><%= subscriber.first_name %></td>
+          <td><%= subscriber.last_name %></td>
+          <td><%= subscriber.email %></td>
+          <td><%= subscriber.tags.map(&:name).join(', ') %></td>
+          <td><%= link_to 'Edit', edit_subscriber_path(subscriber) %></td>
+          <td><%= link_to 'Destroy', subscriber, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,7 @@
+<% if @subscriber %>
+  <h1>Unsubscribe from <%= @subscriber.user.company_name %></h1>
+  <p>Hello<%= @subscriber.first_name ? " #{@subscriber.first_name}" : '' %>, are you sure don't wish to receive any more emails from <%= @subscriber.user.company_name %>?</p>
+  <p><a href="/submit_unsubscribe/<%= @subscriber.unsubscribe_token %>">Yes</a> | <a href="/cancel_unsubscribe/<%= @subscriber.unsubscribe_token %>">No</a></p>
+<% else %>
+  Subscriber not found
+<% end %>

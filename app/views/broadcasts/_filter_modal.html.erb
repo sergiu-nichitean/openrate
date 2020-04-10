@@ -1,0 +1,41 @@
+<div class="modal fade" id="filter_modal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filter_modal_label">Narrow Audience By</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <%= form_tag(action: 'add_filter', id: @broadcast.id) do %>
+        <div class="modal-body">
+          <div class="form-group">
+            <select class="form-control" id="filter_relation" name="filter_relation">
+              <option value="">Please select...</option>
+              <option value="tag" data-type="boolean">Tag</option>
+              <option value="sequence" data-type="boolean">Sequence subscription</option>
+              <option value="custom_field" data-type="string">Custom field</option>
+            </select>
+          </div>
+          <div style="display: none" id="filter_operator_container" class="form-group">
+            <select class="form-control" id="filter_operator" name="filter_operator">
+              <option value="">Please select...</option>
+              <option value="eq">is</option>
+              <option value="not_eq">isn't</option>
+              <option data-not-boolean="true" value="cont">contains</option>
+              <option data-not-boolean="true" value="not_cont">doesn't contain</option>
+              <option data-not-boolean="true" value="begins">begins with</option>
+              <option data-not-boolean="true" value="not_null">has any value</option>
+              <option data-not-boolean="true" value="null">is unknown</option>
+            </select>
+          </div>
+          <div style="display: none" id="filter_value_container" class="form-group"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <%= submit_tag 'Add Condition', id: 'add_filter_condition', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

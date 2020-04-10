@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  message: one
+  sequence: one
+  order: 1
+  delay: 1
+
+two:
+  message: two
+  sequence: two
+  order: 1
+  delay: 1

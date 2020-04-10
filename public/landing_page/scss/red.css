@@ -1,0 +1,91 @@
+.mh-header.nav-strict {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.header-bg {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.lo-discover .lo-nav-tabs .nav-link.active {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.lo-discover .lo-nav-tabs .nav-link:hover {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.lo-blog-tabs .nav-item .nav-link.active {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.lo-blog-content .lo-blg-btn .fa {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.lo-cat-ad .cat-inner .each-inner {
+  background-color: #E67E99;
+}
+
+.lo-footer-bottom {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.lo-blog-tabs .nav-item .nav-link:hover {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.ev-blog-page .header-overlay-3 {
+  background: #E67E99;
+  background: -webkit-gradient(left top, right top, color-stop(0%, #39007D), color-stop(100%, #E67E99));
+  background: -webkit-gradient(linear, left top, right top, from(#39007D), to(#E67E99));
+  background: linear-gradient(to right, #39007D 0%, #E67E99 100%);
+}
+
+.blog-item h2:hover {
+  color: #E67E99;
+}
+
+/*
+  |===================
+  | BLOG SINGLE
+  |===================
+  */
+.blog-content blockquote {
+  color: #FB834C;
+}
+
+.blog-tags .tags a:hover {
+  color: #FB834C;
+}
+
+.comment a {
+  color: #FB834C;
+}
+/*# sourceMappingURL=red.css.map */
