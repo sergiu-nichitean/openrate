@@ -33,7 +33,7 @@ test:
 production:
   <<: *default
   database: openratex_production
-  username: REDACTED
+  username: openrate
   encoding: utf8mb4
   collation: utf8mb4_bin
   password: REDACTED
