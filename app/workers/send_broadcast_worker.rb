@@ -82,8 +82,9 @@ class SendBroadcastWorker
     token = subscriber.unsubscribe_token
     url = "#{host}/unsubscribe/#{token}/"
     link = "<a href=\"#{url}\">Unsubscribe</a>"
-    subscriber.user.email_footer.gsub('{{unsubscribe_link}}', link)
-    subscriber.user.email_footer.gsub('{{unsubscribe_url}}', url)
+    footer = subscriber.user.email_footer.gsub('{{unsubscribe_link}}', link)
+    footer = footer.gsub('{{unsubscribe_url}}', url)
+    footer
   end
 
   def throttling_error?(error, broadcast_id, retry_delay)
