@@ -2,9 +2,6 @@ require_relative 'boot'
 
 require 'rails/all'
 
-# TODO: 2. put on production
-# TODO: 4. use for Amazon Seller Romania Newsletter
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

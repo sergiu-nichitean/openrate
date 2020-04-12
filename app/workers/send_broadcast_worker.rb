@@ -78,10 +78,12 @@ class SendBroadcastWorker
   end
 
   def generate_footer(subscriber)
-    host = 'https://www.openrate.io'
+    host = 'https://openrate.io'
     token = subscriber.unsubscribe_token
-    link = "<a href=\"#{host}/unsubscribe/#{token}/\">Unsubscribe</a>"
-    subscriber.user.email_footer.gsub('{unsubscribe_link}', link)
+    url = "#{host}/unsubscribe/#{token}/"
+    link = "<a href=\"#{url}\">Unsubscribe</a>"
+    subscriber.user.email_footer.gsub('{{unsubscribe_link}}', link)
+    subscriber.user.email_footer.gsub('{{unsubscribe_url}}', url)
   end
 
   def throttling_error?(error, broadcast_id, retry_delay)
