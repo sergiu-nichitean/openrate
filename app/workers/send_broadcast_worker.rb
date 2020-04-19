@@ -64,7 +64,7 @@ class SendBroadcastWorker
       from: broadcast.message.from,
       subject: broadcast.message.subject,
       body: broadcast.message.content,
-      footer: generate_footer(subscriber)
+      footer: generate_footer(subscriber, broadcast.message)
     ).regular_email
   end
 
@@ -77,10 +77,10 @@ class SendBroadcastWorker
     }
   end
 
-  def generate_footer(subscriber)
+  def generate_footer(subscriber, message)
     host = 'https://openrate.io'
     token = subscriber.unsubscribe_token
-    url = "#{host}/unsubscribe/#{token}/"
+    url = "#{host}/unsubscribe/#{token}/#{message.id}"
     link = "<a href=\"#{url}\">Unsubscribe</a>"
     footer = subscriber.user.email_footer.gsub('{{unsubscribe_link}}', link)
     footer = footer.gsub('{{unsubscribe_url}}', url)

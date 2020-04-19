@@ -3,6 +3,7 @@ class SequencesController < ApplicationController
 
   # GET /sequences
   # GET /sequences.json
+  # TODO: 7. Implement sequences
   def index
     @sequences = Sequence.all
     @active_menu = :sequences

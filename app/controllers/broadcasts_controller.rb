@@ -19,7 +19,10 @@ class BroadcastsController < ApplicationController
 
   # GET /broadcasts/new
   def new
-    message = current_user.messages.create(from: current_user.default_from)
+    message = current_user.messages.create(
+      from: current_user.default_from,
+      audience_size: current_user.subscribers.count
+    )
     broadcast = Broadcast.create(
       message_id: message.id,
       user_id: current_user.id,
@@ -33,6 +36,7 @@ class BroadcastsController < ApplicationController
 
   # POST /broadcasts
   # POST /broadcasts.json
+  # TODO: 8. Send Test
   def create
     @broadcast = Broadcast.new(broadcast_params)
 
@@ -53,6 +57,7 @@ class BroadcastsController < ApplicationController
   def update
     respond_to do |format|
       if @broadcast.update(broadcast_params)
+        @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
         send_or_schedule_broadcast
         format.html { redirect_to broadcasts_path, notice: 'Broadcast was successfully updated.' }
         format.json { render :show, status: :ok, location: @broadcast }
@@ -85,6 +90,7 @@ class BroadcastsController < ApplicationController
       operator: params[:filter_operator],
       value: params[:filter_value]
     )
+    @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
     redirect_to edit_broadcast_path(@broadcast)
   end
 

@@ -1,7 +1,16 @@
+<div class="card">
+  <div class="card-body">
+    <% if @subscriber %>
+      <h2>Unsubscribe from <%= @subscriber.user.company_name %></h2>
+      <p class="mt-4">Hello<%= @subscriber.first_name ? " #{@subscriber.first_name}" : '' %>, are you sure don't wish to receive any more emails from <%= @subscriber.user.company_name %>?</p>
+    <% else %>
+      Subscriber not found
+    <% end %>
+  </div>
+</div>
 <% if @subscriber %>
-  <h1>Unsubscribe from <%= @subscriber.user.company_name %></h1>
-  <p>Hello<%= @subscriber.first_name ? " #{@subscriber.first_name}" : '' %>, are you sure don't wish to receive any more emails from <%= @subscriber.user.company_name %>?</p>
-  <p><a href="/submit_unsubscribe/<%= @subscriber.unsubscribe_token %>">Yes</a> | <a href="/cancel_unsubscribe/<%= @subscriber.unsubscribe_token %>">No</a></p>
-<% else %>
-  Subscriber not found
+  <div class="mt-3">
+    <a class="btn btn-warning mr-2" href="/cancel_unsubscribe/<%= @subscriber.unsubscribe_token %>">Cancel</a>
+    <a class="btn btn-success" href="/submit_unsubscribe/<%= @subscriber.unsubscribe_token %>/<%= @message_id %>">Unsubscribe</a>
+  </div>
 <% end %>

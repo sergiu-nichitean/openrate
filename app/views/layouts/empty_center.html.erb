@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @page_title %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="The email marketing platform you've been waiting for: send unlimited emails to unlimited subscribers for free." />
+    <meta name="keywords" content="email marketing, email list, subscribers, send emails" />
+    <meta name="developer" content="OpenRate.io">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body class="empty-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-10 offset-xs-1 col-lg-8 offset-lg-2">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

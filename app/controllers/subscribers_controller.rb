@@ -1,11 +1,18 @@
 class SubscribersController < ApplicationController
   before_action :set_subscriber, only: [:show, :edit, :update, :destroy]
+  before_action :set_subscriber_by_token, only: %i[
+    unsubscribe cancel_unsubscribe submit_unsubscribe
+  ]
   skip_before_action :authenticate_user!, only: %i[
     unsubscribe cancel_unsubscribe submit_unsubscribe
   ]
+  layout 'empty_center', only: %i[unsubscribe cancel_unsubscribe submit_unsubscribe]
 
   # GET /subscribers
   # GET /subscribers.json
+
+  # TODO: 4. Filter subscribers (flow from broadcasts, maybe drop custom fields for now)
+  # TODO: 5. Bulk actions
   def index
     @subscribers = current_user.subscribers
     @active_menu = :subscribers
@@ -66,18 +73,24 @@ class SubscribersController < ApplicationController
   end
 
   def unsubscribe
-    @subscriber = Subscriber.where(unsubscribe_token: params[:token]).first
-    render layout: false
+    return unless @subscriber
+
+    @page_title = "Unsubscribe from emails - #{@subscriber.user.company_name}"
+    @message_id = params[:message_id]
   end
 
   def cancel_unsubscribe
-    render layout: false
+    @page_title = "Canceled unsubscribe - #{@subscriber.user.company_name}"
   end
 
   def submit_unsubscribe
-    @subscriber = Subscriber.where(unsubscribe_token: params[:token]).first
-    @subscriber.destroy
-    render layout: false
+    @page_title = "Unsubscribed successfully - #{@subscriber.user.company_name}"
+    if (message = Message.find_by(id: params[:message_id]))
+      message.increment!(:unsubscribes)
+      @subscriber.destroy
+    else
+      redirect_to '/' unless message
+    end
   end
 
   def import; end
@@ -108,6 +121,10 @@ class SubscribersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_subscriber
     @subscriber = Subscriber.find(params[:id])
+  end
+
+  def set_subscriber_by_token
+    @subscriber = Subscriber.find_by(unsubscribe_token: params[:token])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

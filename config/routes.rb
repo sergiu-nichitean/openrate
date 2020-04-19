@@ -15,9 +15,9 @@ Rails.application.routes.draw do
   get 'settings' => 'settings#index'
   patch 'settings' => 'settings#save'
 
-  get '/unsubscribe/:token' => 'subscribers#unsubscribe'
+  get '/unsubscribe/:token/:message_id' => 'subscribers#unsubscribe'
   get '/cancel_unsubscribe/:token' => 'subscribers#cancel_unsubscribe'
-  get '/submit_unsubscribe/:token' => 'subscribers#submit_unsubscribe'
+  get '/submit_unsubscribe/:token/:message_id' => 'subscribers#submit_unsubscribe'
   get '/import_subscribers' => 'subscribers#import'
   post '/submit_import_subscribers' => 'subscribers#submit_import'
   get '/import_status/:id' => 'subscribers#import_status'

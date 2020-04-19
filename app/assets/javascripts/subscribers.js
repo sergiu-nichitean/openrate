@@ -15,3 +15,7 @@ function poll_for_subscriber_import_status(import_id){
     });
   }, 1000);
 }
+
+$( document ).on('turbolinks:load', function() {
+  $('.empty-center').css('padding-top', ($(window).height()-$('.empty-center .container').outerHeight())/3);
+});
