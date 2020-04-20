@@ -1,16 +1,17 @@
 class BroadcastsController < ApplicationController
   before_action :set_broadcast, only: %i[
-    show edit update destroy add_filter delete_filter
+    show edit update destroy cancel add_filter delete_filter
   ]
   before_action :set_active_menu
 
   # GET /broadcasts
   # GET /broadcasts.json
   def index
-    @sending = current_user.broadcasts.where(status: 'to_send')
-    @drafts = current_user.broadcasts.where(status: 'draft')
-    @scheduled = current_user.broadcasts.where(status: 'scheduled')
-    @sent = current_user.broadcasts.where(status: 'sent')
+    @sending = current_user.broadcasts.where(status: :to_send)
+    @drafts = current_user.broadcasts.where(status: :draft)
+    @scheduled = current_user.broadcasts.where(status: :scheduled)
+    @sent = current_user.broadcasts.where(status: :sent)
+    @canceled = current_user.broadcasts.where(status: :canceled)
   end
 
   # GET /broadcasts/1
@@ -36,7 +37,7 @@ class BroadcastsController < ApplicationController
 
   # POST /broadcasts
   # POST /broadcasts.json
-  # TODO: 8. Send Test
+  # TODO: 7. Send Test
   def create
     @broadcast = Broadcast.new(broadcast_params)
 
@@ -76,6 +77,11 @@ class BroadcastsController < ApplicationController
       format.html { redirect_to broadcasts_url, notice: 'Broadcast was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def cancel
+    @broadcast.update_attribute(:status, :canceled)
+    redirect_to broadcasts_path
   end
 
   def filter_value_selector

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'broadcast_filter_value_selector' => 'broadcasts#filter_value_selector'
   post 'broadcast_add_filter/:id' => 'broadcasts#add_filter'
   get 'broadcast_delete_filter/:id' => 'broadcasts#delete_filter'
+  get 'broadcast_cancel/:id' => 'broadcasts#cancel'
   get 'settings' => 'settings#index'
   patch 'settings' => 'settings#save'
 

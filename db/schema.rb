@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_19_120941) do
+ActiveRecord::Schema.define(version: 2020_04_20_094626) do
 
   create_table "broadcasts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "user_id"
@@ -48,10 +48,10 @@ ActiveRecord::Schema.define(version: 2020_04_19_120941) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "from"
-    t.integer "audience_size"
-    t.integer "opens"
-    t.integer "clicks"
-    t.integer "unsubscribes"
+    t.integer "audience_size", default: 0
+    t.integer "opens", default: 0
+    t.integer "clicks", default: 0
+    t.integer "unsubscribes", default: 0
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 

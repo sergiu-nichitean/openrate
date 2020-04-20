@@ -22,6 +22,8 @@ class SendBroadcastWorker
 
   def send_emails(broadcast, retry_delay)
     broadcast.subscribers.each do |subscriber|
+      break if broadcast_canceled?(broadcast)
+
       next if broadcast.message.sent_messages.where(
         subscriber_id: subscriber.id
       ).first
@@ -62,8 +64,8 @@ class SendBroadcastWorker
     MessageMailer.with(
       to: subscriber.email,
       from: broadcast.message.from,
-      subject: broadcast.message.subject,
-      body: broadcast.message.content,
+      subject: replace_subscriber_vars(subscriber, broadcast.message.subject),
+      body: replace_subscriber_vars(subscriber, broadcast.message.content),
       footer: generate_footer(subscriber, broadcast.message)
     ).regular_email
   end
@@ -75,6 +77,11 @@ class SendBroadcastWorker
       user_name: user.smtp_user_name,
       password: user.smtp_password
     }
+  end
+
+  def replace_subscriber_vars(subscriber, text)
+    text.gsub('{{first_name}}', subscriber.first_name)
+        .gsub('{{last_name}}', subscriber.last_name)
   end
 
   def generate_footer(subscriber, message)
@@ -98,5 +105,9 @@ class SendBroadcastWorker
     SendBroadcastWorker.perform_in(
       new_delay.minutes, broadcast_id, new_delay
     )
+  end
+
+  def broadcast_canceled?(broadcast)
+    Broadcast.select(:status).where(id: broadcast.id).first.status == 'canceled'
   end
 end

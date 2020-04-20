@@ -11,8 +11,8 @@ class SubscribersController < ApplicationController
   # GET /subscribers
   # GET /subscribers.json
 
-  # TODO: 4. Filter subscribers (flow from broadcasts, maybe drop custom fields for now)
-  # TODO: 5. Bulk actions
+  # TODO: 3. Filter subscribers (flow from broadcasts, maybe drop custom fields for now)
+  # TODO: 4. Bulk actions
   def index
     @subscribers = current_user.subscribers
     @active_menu = :subscribers
@@ -73,6 +73,7 @@ class SubscribersController < ApplicationController
   end
 
   def unsubscribe
+    @page_title = 'Unsubscribe from emails'
     return unless @subscriber
 
     @page_title = "Unsubscribe from emails - #{@subscriber.user.company_name}"

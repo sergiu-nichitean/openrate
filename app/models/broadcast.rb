@@ -5,7 +5,7 @@ class Broadcast < ApplicationRecord
 
   accepts_nested_attributes_for :message
 
-  enum status: %i[draft scheduled sent to_send]
+  enum status: %i[draft scheduled sent to_send canceled]
 
   def sent_messages
     message.sent_messages
