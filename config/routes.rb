@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   get '/submit_unsubscribe/:token/:message_id' => 'subscribers#submit_unsubscribe'
   get '/import_subscribers' => 'subscribers#import'
   post '/submit_import_subscribers' => 'subscribers#submit_import'
+  get '/bulk_remove_subscribers' => 'subscribers#bulk_remove'
+  post '/submit_bulk_remove_subscribers' => 'subscribers#submit_bulk_remove'
   get '/import_status/:id' => 'subscribers#import_status'
 
   get 'dashboard' => 'dashboard#index'

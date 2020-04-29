@@ -1,0 +1,12 @@
+# See https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml
+# for configuration options.
+
+# Remove "Missing top-level class documentation comment." warning
+Style/Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 100
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

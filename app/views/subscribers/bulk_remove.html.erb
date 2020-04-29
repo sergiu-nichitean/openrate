@@ -1,0 +1,9 @@
+<h1>Bulk Remove Subscribers</h1>
+
+<%= form_tag(submit_bulk_remove_subscribers_path, method: 'post') do %>
+  <div class="form-group">
+    <%= label_tag :emails %>
+    <%= text_area_tag :emails, '', class: 'form-control', rows: 10 %>
+  </div>
+  <%= submit_tag 'Remove', class: 'btn btn-primary float-right' %>
+<% end %>

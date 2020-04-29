@@ -24,13 +24,7 @@
             <td><%= broadcast.message.subject %></td>
             <td><%= broadcast.send_at %></td>
             <td><%= broadcast.message.audience_size.to_i %></td>
-            <td>
-              <% if broadcast.message.audience_size.to_i.zero? %>
-                0
-              <% else %>
-                <%= broadcast.message.sent_messages.count + broadcast.message.unsubscribes.to_i %> (<%= '%.2f' % ((broadcast.message.sent_messages.count + broadcast.message.unsubscribes.to_i) * 100 / broadcast.message.audience_size.to_i) %>%)
-              <% end %>
-            </td>
+            <td><%= broadcast.message.emails_sent.to_i %> (<%= broadcast.message.audience_size.to_i.zero? ? '0' : '%.2f' % (broadcast.message.emails_sent.to_i * 100 / broadcast.message.audience_size.to_i) %>%)</td>
             <td><%= broadcast.message.unsubscribes.to_i %></td>
             <td><%= link_to 'View Details', broadcast_path(broadcast) %></td>
             <td><%= link_to 'Duplicate', "#duplicate-#{broadcast.id}" %></td>
@@ -124,13 +118,7 @@
             <td><%= broadcast.message.subject %></td>
             <td><%= broadcast.send_at %></td>
             <td><%= broadcast.message.audience_size.to_i %></td>
-            <td>
-              <% if broadcast.message.audience_size.to_i.zero? %>
-                0
-              <% else %>
-                <%= broadcast.message.sent_messages.count + broadcast.message.unsubscribes.to_i %> (<%= (broadcast.message.sent_messages.count + broadcast.message.unsubscribes.to_i) * 100 / broadcast.message.audience_size.to_i %>%)
-              <% end %>
-            </td>
+            <td><%= broadcast.message.emails_sent.to_i %> (<%= broadcast.message.audience_size.to_i.zero? ? '0' : '%.2f' % (broadcast.message.emails_sent.to_i * 100 / broadcast.message.audience_size.to_i) %>%)</td>
             <td><%= broadcast.message.unsubscribes.to_i %></td>
             <td><%= link_to 'View Details', broadcast_path(broadcast) %></td>
             <td><%= link_to 'Duplicate', "#duplicate-#{broadcast.id}" %></td>
@@ -163,13 +151,7 @@
             <td><%= broadcast.message.subject %></td>
             <td><%= broadcast.send_at %></td>
             <td><%= broadcast.message.audience_size.to_i %></td>
-            <td>
-              <% if broadcast.message.audience_size.to_i.zero? %>
-                0
-              <% else %>
-                <%= broadcast.message.sent_messages.count + broadcast.message.unsubscribes.to_i %> (<%= (broadcast.message.sent_messages.count + broadcast.message.unsubscribes.to_i) * 100 / broadcast.message.audience_size.to_i %>%)
-              <% end %>
-            </td>
+            <td><%= broadcast.message.emails_sent.to_i %> (<%= broadcast.message.audience_size.to_i.zero? ? '0' : '%.2f' % (broadcast.message.emails_sent.to_i * 100 / broadcast.message.audience_size.to_i) %>%)</td>
             <td><%= broadcast.message.unsubscribes.to_i %></td>
             <td><%= link_to 'View Details', broadcast_path(broadcast) %></td>
             <td><%= link_to 'Duplicate', "#duplicate-#{broadcast.id}" %></td>

@@ -2,20 +2,18 @@ class SendBroadcastWorker
   include Sidekiq::Worker
 
   def perform(broadcast_id, retry_delay = 1)
-    puts "Starting SendBroadcastWorker"
+    puts 'Starting SendBroadcastWorker'
 
     broadcast = Broadcast.find(broadcast_id)
 
     if broadcast.status == 'scheduled'
-      puts "Broadcast is scheduled, changing status to to_send"
+      puts 'Broadcast is scheduled, changing status to to_send'
       broadcast.update_attribute(:status, 'to_send')
     end
 
     send_emails(broadcast, retry_delay)
 
-    sent_message_count = broadcast.message.sent_messages.count
-    subscriber_count = broadcast.subscribers.count
-    return unless sent_message_count == subscriber_count
+    return unless broadcast.message.emails_sent == broadcast.message.audience_size
 
     broadcast.update_attribute(:status, 'sent')
   end
@@ -24,9 +22,7 @@ class SendBroadcastWorker
     broadcast.subscribers.each do |subscriber|
       break if broadcast_canceled?(broadcast)
 
-      next if broadcast.message.sent_messages.where(
-        subscriber_id: subscriber.id
-      ).first
+      next if broadcast.message.sent_messages.find_by(subscriber_id: subscriber.id)
 
       error_message = send_email(subscriber, broadcast)
 
@@ -43,6 +39,7 @@ class SendBroadcastWorker
       status: error_message.empty? ? 'sent' : 'error',
       error: error_message
     )
+    broadcast.message.increment!(:emails_sent)
   end
 
   def send_email(subscriber, broadcast)

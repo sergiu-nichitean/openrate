@@ -104,6 +104,16 @@ class SubscribersController < ApplicationController
     end
   end
 
+  def bulk_remove; end
+
+  def submit_bulk_remove
+    if params[:emails].present?
+      bulk_remove_by_emails(params[:emails])
+    else
+      redirect_to bulk_remove_subscribers_path, alert: 'Please enter at least one email address.'
+    end
+  end
+
   def import_status
     @import = SubscriberImport.find(params[:id])
     respond_to do |format|
@@ -126,6 +136,23 @@ class SubscribersController < ApplicationController
 
   def set_subscriber_by_token
     @subscriber = Subscriber.find_by(unsubscribe_token: params[:token])
+  end
+
+  def bulk_remove_by_emails(raw_emails)
+    emails = raw_emails.lines.map(&:strip)
+    unless validate_bulk_emails(emails)
+      redirect_to(
+        bulk_remove_subscribers_path, alert: 'You have entered one or more invalid emails.'
+      )
+      return
+    end
+    redirect_to subscribers_url, notice: Subscriber.bulk_remove_by_emails(emails, current_user.id)
+  end
+
+  def validate_bulk_emails(emails)
+    return true if emails.reject { |email| Devise.email_regexp.match(email) }.empty?
+
+    false
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
