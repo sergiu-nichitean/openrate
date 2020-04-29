@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   resources :tags
   resources :broadcasts
   resources :sequences
-  resources :messages
   resources :subscribers
   resources :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -24,6 +23,8 @@ Rails.application.routes.draw do
   get '/bulk_remove_subscribers' => 'subscribers#bulk_remove'
   post '/submit_bulk_remove_subscribers' => 'subscribers#submit_bulk_remove'
   get '/import_status/:id' => 'subscribers#import_status'
+
+  get '/trackpx/:sent_message_id/openrateio.jpg' => 'messages#tracking_pixel'
 
   get 'dashboard' => 'dashboard#index'
 
