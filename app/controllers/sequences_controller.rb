@@ -3,7 +3,8 @@ class SequencesController < ApplicationController
 
   # GET /sequences
   # GET /sequences.json
-  # TODO: 7. Implement sequences
+  # TODO: 5. Implement sequences, revisit: rules, subscribers bulk actions
+  # dashboard, webhooks (add subscriber to sequence)
   def index
     @sequences = Sequence.all
     @active_menu = :sequences

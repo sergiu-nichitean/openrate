@@ -4,7 +4,6 @@ class Message < ApplicationRecord
   has_many :sent_messages
   has_many :rules
 
-  # TODO: 2. Add rule: if opened, add tag, if clicked add tag
   def open_rule
     rules.where(trigger: 'open').first
   end

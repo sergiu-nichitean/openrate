@@ -10,4 +10,10 @@ class User < ApplicationRecord
   has_many :messages
   has_many :tags
   has_many :subscriber_imports
+
+  before_create :set_api_key
+
+  def set_api_key
+    self.api_key = SecureRandom.uuid
+  end
 end

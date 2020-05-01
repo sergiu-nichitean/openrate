@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   get '/trackpx/:sent_message_id/openrateio.jpg' => 'messages#tracking_pixel'
   get '/trackcl/:sent_message_id' => 'messages#track_click'
 
+  get '/webhooks/add_subscriber' => 'webhooks#add_subscriber'
+  post '/webhooks/add_subscriber' => 'webhooks#add_subscriber'
+
   get 'dashboard' => 'dashboard#index'
 
   root to: 'landing_page#index'

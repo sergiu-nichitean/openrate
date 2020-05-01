@@ -12,9 +12,7 @@ class Rule < ApplicationRecord
 
       subscriber.tags << tag
     when 'Sequence'
-      sequence = Sequence.find_by(id: action_id)
-      return unless sequence
-      # TODO: 9. Add to sequence
+      Sequence.find_by(id: action_id)&.add_subscriber(subscriber)
     end
   end
 end

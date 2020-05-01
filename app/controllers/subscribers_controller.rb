@@ -11,9 +11,9 @@ class SubscribersController < ApplicationController
   # GET /subscribers
   # GET /subscribers.json
 
-  # TODO: 3. Add subscribers via webhook
-  # TODO: 4. Filter subscribers (flow from broadcasts, maybe drop custom fields for now)
-  # TODO: 5. Bulk actions
+  # TODO: 1. Webhook: test POST, implement in AS Romania
+  # TODO: 2. Filter subscribers (flow from broadcasts, maybe drop custom fields for now)
+  # TODO: 3. Bulk actions: add tag, remove tag, delete, export
   def index
     @subscribers = current_user.subscribers
     @active_menu = :subscribers

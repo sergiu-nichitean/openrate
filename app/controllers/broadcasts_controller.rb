@@ -37,7 +37,7 @@ class BroadcastsController < ApplicationController
 
   # POST /broadcasts
   # POST /broadcasts.json
-  # TODO: 8. Send Test
+  # TODO: 6. Send Test
   def create
     @broadcast = Broadcast.new(broadcast_params)
 
