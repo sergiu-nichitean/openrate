@@ -91,7 +91,7 @@ class SubscribersController < ApplicationController
       message.increment!(:unsubscribes)
       @subscriber.destroy
     else
-      redirect_to '/' unless message
+      redirect_to '/'
     end
   end
 

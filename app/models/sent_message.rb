@@ -23,7 +23,7 @@ class SentMessage < ApplicationRecord
   def generate_footer
     host = 'https://openrate.io'
     token = subscriber.unsubscribe_token
-    url = "#{host}/unsubscribe/#{token}/#{id}"
+    url = "#{host}/unsubscribe/#{token}/#{message_id}"
     link = "<a href=\"#{url}\">Unsubscribe</a>"
 
     footer = add_click_tracking(subscriber.user.email_footer)
