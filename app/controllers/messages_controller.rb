@@ -10,4 +10,14 @@ class MessagesController < ApplicationController
 
     send_file 'public/tracking_pixel.jpg', type: 'image/jpeg', disposition: 'inline'
   end
+
+  def track_click
+    sent_message = SentMessage.find_by(id: params[:sent_message_id])
+    if sent_message && sent_message.status == 'opened'
+      sent_message.update_attribute(:status, 'clicked')
+      sent_message.message.increment!(:clicks)
+    end
+
+    redirect_to params[:url]
+  end
 end

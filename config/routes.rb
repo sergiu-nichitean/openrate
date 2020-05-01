@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get '/import_status/:id' => 'subscribers#import_status'
 
   get '/trackpx/:sent_message_id/openrateio.jpg' => 'messages#tracking_pixel'
+  get '/trackcl/:sent_message_id' => 'messages#track_click'
 
   get 'dashboard' => 'dashboard#index'
 

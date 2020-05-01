@@ -24,20 +24,12 @@ class SendBroadcastWorker
 
       next if broadcast.message.sent_messages.find_by(subscriber_id: subscriber.id)
 
-      sent_message = create_sent_message(broadcast, subscriber)
-      error_message = send_email(subscriber, broadcast, sent_message.id)
+      sent_message = SentMessage.create_from_broadcast(broadcast, subscriber)
+      error_message = send_email(subscriber, broadcast, sent_message)
 
       handle_sent_message(sent_message, error_message, broadcast.id, retry_delay)
       break if throttling_error?(error_message)
     end
-  end
-
-  def create_sent_message(broadcast, subscriber)
-    puts "Creating sent_message for subscriber with ID: #{subscriber.id}, email: #{subscriber.email}"
-    broadcast.message.increment!(:emails_sent)
-    broadcast.message.sent_messages.create(
-      subscriber_id: subscriber.id, status: 'sent'
-    )
   end
 
   def sent_message_error(error_message, sent_message)
@@ -55,9 +47,9 @@ class SendBroadcastWorker
     end
   end
 
-  def send_email(subscriber, broadcast, sent_message_id)
+  def send_email(subscriber, broadcast, sent_message)
     puts "Sending email to subscriber with ID: #{subscriber.id}, email: #{subscriber.email}"
-    mail = generate_email(subscriber, broadcast, sent_message_id)
+    mail = sent_message.generate_email
     mail.delivery_method.settings.merge! custom_smtp_settings(broadcast.user)
 
     begin
@@ -70,16 +62,6 @@ class SendBroadcastWorker
     error_message
   end
 
-  def generate_email(subscriber, broadcast, sent_message_id)
-    MessageMailer.with(
-      to: subscriber.email,
-      from: broadcast.message.from,
-      subject: replace_subscriber_vars(subscriber, broadcast.message.subject),
-      body: replace_subscriber_vars(subscriber, broadcast.message.content),
-      footer: generate_footer(subscriber, broadcast.message, sent_message_id)
-    ).regular_email
-  end
-
   def custom_smtp_settings(user)
     {
       address: user.smtp_address,
@@ -87,21 +69,6 @@ class SendBroadcastWorker
       user_name: user.smtp_user_name,
       password: user.smtp_password
     }
-  end
-
-  def replace_subscriber_vars(subscriber, text)
-    text.gsub('{{first_name}}', subscriber.first_name)
-        .gsub('{{last_name}}', subscriber.last_name)
-  end
-
-  def generate_footer(subscriber, message, sent_message_id)
-    host = 'https://openrate.io'
-    token = subscriber.unsubscribe_token
-    url = "#{host}/unsubscribe/#{token}/#{message.id}"
-    link = "<a href=\"#{url}\">Unsubscribe</a>"
-    footer = subscriber.user.email_footer.gsub('{{unsubscribe_link}}', link)
-    footer = footer.gsub('{{unsubscribe_url}}', url)
-    "#{footer} <img src=\"https://openrate.io/trackpx/#{sent_message_id}/openrateio.jpg\">"
   end
 
   def throttling_error?(error)

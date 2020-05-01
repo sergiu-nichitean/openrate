@@ -10,7 +10,7 @@ class BroadcastsController < ApplicationController
     @sending = current_user.broadcasts.where(status: :to_send)
     @drafts = current_user.broadcasts.where(status: :draft)
     @scheduled = current_user.broadcasts.where(status: :scheduled)
-    @sent = current_user.broadcasts.where(status: :sent)
+    @sent = current_user.broadcasts.where(status: :sent).order(send_at: :desc)
     @canceled = current_user.broadcasts.where(status: :canceled)
   end
 
@@ -37,7 +37,7 @@ class BroadcastsController < ApplicationController
 
   # POST /broadcasts
   # POST /broadcasts.json
-  # TODO: 7. Send Test
+  # TODO: 8. Send Test
   def create
     @broadcast = Broadcast.new(broadcast_params)
 

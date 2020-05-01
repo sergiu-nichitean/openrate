@@ -11,8 +11,9 @@ class SubscribersController < ApplicationController
   # GET /subscribers
   # GET /subscribers.json
 
-  # TODO: 3. Filter subscribers (flow from broadcasts, maybe drop custom fields for now)
-  # TODO: 4. Bulk actions
+  # TODO: 3. Add subscribers via webhook
+  # TODO: 4. Filter subscribers (flow from broadcasts, maybe drop custom fields for now)
+  # TODO: 5. Bulk actions
   def index
     @subscribers = current_user.subscribers
     @active_menu = :subscribers
