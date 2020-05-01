@@ -5,6 +5,7 @@ class MessagesController < ApplicationController
     sent_message = SentMessage.find_by(id: params[:sent_message_id])
     if sent_message && sent_message.status == 'sent'
       sent_message.update_attribute(:status, 'opened')
+      sent_message.trigger_open
       sent_message.message.increment!(:opens)
     end
 
@@ -15,6 +16,7 @@ class MessagesController < ApplicationController
     sent_message = SentMessage.find_by(id: params[:sent_message_id])
     if sent_message && sent_message.status == 'opened'
       sent_message.update_attribute(:status, 'clicked')
+      sent_message.trigger_click
       sent_message.message.increment!(:clicks)
     end
 

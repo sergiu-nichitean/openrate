@@ -59,6 +59,7 @@ class BroadcastsController < ApplicationController
     respond_to do |format|
       if @broadcast.update(broadcast_params)
         @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
+        save_message_rules(@broadcast.message)
         send_or_schedule_broadcast
         format.html { redirect_to broadcasts_path, notice: 'Broadcast was successfully updated.' }
         format.json { render :show, status: :ok, location: @broadcast }
@@ -136,5 +137,20 @@ class BroadcastsController < ApplicationController
     bp[:user_id] = current_user.id
     bp[:message_attributes][:user_id] = current_user.id
     bp
+  end
+
+  def save_message_rules(message)
+    save_rule(message, 'open')
+    save_rule(message, 'click')
+  end
+
+  def save_rule(message, event)
+    return unless params[:"#{event}_rule"].present?
+
+    rule_arr = params[:"#{event}_rule"].split('-')
+    rule = Rule.find_or_create_by(message_id: message.id, trigger: event)
+    rule.action_class = rule_arr[0]
+    rule.action_id = rule_arr[1]
+    rule.save
   end
 end

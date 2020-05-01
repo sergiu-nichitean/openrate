@@ -57,6 +57,14 @@ class SentMessage < ApplicationRecord
     ).regular_email
   end
 
+  def trigger_open
+    message.open_rule&.trigger_event(subscriber)
+  end
+
+  def trigger_click
+    message.click_rule&.trigger_event(subscriber)
+  end
+
   def self.create_from_broadcast(broadcast, subscriber)
     puts "Creating sent_message for subscriber with ID: #{subscriber.id}, email: #{subscriber.email}"
     broadcast.message.increment!(:emails_sent)

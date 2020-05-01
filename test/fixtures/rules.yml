@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  message: one
+  trigger: 1
+  action_class: MyString
+  action_id: 1
+
+two:
+  message: two
+  trigger: 1
+  action_class: MyString
+  action_id: 1

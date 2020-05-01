@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_134904) do
+ActiveRecord::Schema.define(version: 2020_05_01_112923) do
 
   create_table "broadcasts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "user_id"
@@ -54,6 +54,16 @@ ActiveRecord::Schema.define(version: 2020_04_29_134904) do
     t.integer "unsubscribes", default: 0
     t.integer "emails_sent", default: 0
     t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "rules", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "message_id", null: false
+    t.integer "trigger"
+    t.string "action_class"
+    t.integer "action_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["message_id"], name: "index_rules_on_message_id"
   end
 
   create_table "sent_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -175,6 +185,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_134904) do
   add_foreign_key "custom_fields", "users"
   add_foreign_key "filters", "broadcasts"
   add_foreign_key "messages", "users"
+  add_foreign_key "rules", "messages"
   add_foreign_key "sent_messages", "messages"
   add_foreign_key "sent_messages", "subscribers"
   add_foreign_key "sequence_messages", "messages"
