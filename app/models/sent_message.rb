@@ -16,8 +16,8 @@ class SentMessage < ApplicationRecord
   end
 
   def content_replace_all_vars
-    add_click_tracking(message.content)
-    replace_subscriber_vars(message.content)
+    content = add_click_tracking(message.content)
+    replace_subscriber_vars(content)
   end
 
   def generate_footer
@@ -26,10 +26,9 @@ class SentMessage < ApplicationRecord
     url = "#{host}/unsubscribe/#{token}/#{id}"
     link = "<a href=\"#{url}\">Unsubscribe</a>"
 
-    footer = subscriber.user.email_footer
-    add_click_tracking(footer)
-    footer.gsub!('{{unsubscribe_link}}', link)
-    footer.gsub!('{{unsubscribe_url}}', url)
+    footer = add_click_tracking(subscriber.user.email_footer)
+             .gsub('{{unsubscribe_link}}', link)
+             .gsub!('{{unsubscribe_url}}', url)
     "#{footer} <img src=\"#{host}/trackpx/#{id}/openrateio.jpg\">"
   end
 
@@ -38,12 +37,14 @@ class SentMessage < ApplicationRecord
   end
 
   def add_click_tracking(text)
-    text.scan(/<a.*?href=["|']http(.*?)["|']/i).flatten.each do |url|
-      text.gsub!(
+    newtext = text.dup
+    newtext.scan(/<a.*?href=["|']http(.*?)["|']/i).flatten.each do |url|
+      newtext.gsub!(
         /<a(.*?)href=["|']http#{url}["|']/i,
         '<a\1href="' + click_track_url("http#{url}") + '"'
       )
     end
+    newtext
   end
 
   def generate_email
