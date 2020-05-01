@@ -16,8 +16,8 @@ class SentMessage < ApplicationRecord
   end
 
   def content_replace_all_vars
-    content = add_click_tracking(message.content)
-    replace_subscriber_vars(content)
+    newcontent = add_click_tracking(message.content)
+    replace_subscriber_vars(newcontent)
   end
 
   def generate_footer
