@@ -11,7 +11,7 @@ class SendBroadcastWorker
       broadcast.update_attribute(:status, 'to_send')
     end
 
-    puts "Broadcast audience: #{broadcast.subscribers.map(&:email).join(', ')}"
+    puts "Broadcast audience: #{broadcast.subscribers.map(&:email).join("\n")}"
 
     send_emails(broadcast, retry_delay)
 
