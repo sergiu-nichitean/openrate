@@ -2,19 +2,22 @@ class SendBroadcastWorker
   include Sidekiq::Worker
 
   def perform(broadcast_id, retry_delay = 1)
-    puts 'Starting SendBroadcastWorker'
+    logger.debug 'Starting SendBroadcastWorker'
 
     broadcast = Broadcast.find(broadcast_id)
 
     if broadcast.status == 'scheduled'
-      puts 'Broadcast is scheduled, changing status to to_send'
+      logger.debug 'Broadcast is scheduled, changing status to to_send'
       broadcast.update_attribute(:status, 'to_send')
     end
 
     send_emails(broadcast, retry_delay)
 
+    logger.debug "emails_sent = #{broadcast.message.emails_sent}, audience_size = #{broadcast.message.audience_size}"
+
     return unless broadcast.message.emails_sent == broadcast.message.audience_size
 
+    logger.debug 'Sent emails equals audience size, changing status to sent'
     broadcast.update_attribute(:status, 'sent')
   end
 
@@ -48,7 +51,7 @@ class SendBroadcastWorker
   end
 
   def send_email(subscriber, broadcast, sent_message)
-    puts "Sending email to subscriber with ID: #{subscriber.id}, email: #{subscriber.email}"
+    logger.debug "Sending email to subscriber with ID: #{subscriber.id}, email: #{subscriber.email}"
     mail = sent_message.generate_email
     mail.delivery_method.settings.merge! custom_smtp_settings(broadcast.user)
 
@@ -59,6 +62,7 @@ class SendBroadcastWorker
       error_message = e.to_s
     end
 
+    logger.debug "Error message: #{error_message}"
     error_message
   end
 
@@ -76,9 +80,9 @@ class SendBroadcastWorker
   end
 
   def reschedule_worker(broadcast_id, retry_delay)
-    puts "Got throttling error: #{error}"
+    logger.debug "Got throttling error: #{error}"
     new_delay = retry_delay * 2
-    puts "Re-Scheduling worker in #{new_delay} minutes"
+    logger.debug "Re-Scheduling worker in #{new_delay} minutes"
     SendBroadcastWorker.perform_in(
       new_delay.minutes, broadcast_id, new_delay
     )
