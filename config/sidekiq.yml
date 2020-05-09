@@ -1,2 +1,7 @@
----
-:logfile: ./log/sidekiq.log
+:pidfile: ./tmp/sidekiq.pid
+
+development:
+  :concurrency: 5
+production:
+  :logfile: ./log/sidekiq.log
+  :concurrency: 2
