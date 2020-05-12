@@ -2,6 +2,7 @@ class Message < ApplicationRecord
   belongs_to :user
   has_one :broadcast
   has_many :sent_messages
+  has_many :snapshot_subscribers
   has_many :rules
 
   def open_rule
@@ -22,5 +23,9 @@ class Message < ApplicationRecord
     return nil unless click_rule
 
     "#{click_rule.action_class}-#{click_rule.action_id}"
+  end
+
+  def done_sending?
+    snapshot_subscribers.where(status: 'pending').empty?
   end
 end

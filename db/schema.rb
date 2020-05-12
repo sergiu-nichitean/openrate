@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_01_184333) do
+ActiveRecord::Schema.define(version: 2020_05_11_203611) do
 
   create_table "broadcasts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "user_id"
@@ -106,6 +106,16 @@ ActiveRecord::Schema.define(version: 2020_05_01_184333) do
     t.index ["user_id"], name: "index_sequences_on_user_id"
   end
 
+  create_table "snapshot_subscribers", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "subscriber_id", null: false
+    t.bigint "message_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "status"
+    t.index ["message_id"], name: "index_snapshot_subscribers_on_message_id"
+    t.index ["subscriber_id"], name: "index_snapshot_subscribers_on_subscriber_id"
+  end
+
   create_table "subscriber_custom_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "subscriber_id"
     t.bigint "custom_field_id"
@@ -193,6 +203,8 @@ ActiveRecord::Schema.define(version: 2020_05_01_184333) do
   add_foreign_key "sequence_subscribers", "sequences"
   add_foreign_key "sequence_subscribers", "subscribers"
   add_foreign_key "sequences", "users"
+  add_foreign_key "snapshot_subscribers", "messages"
+  add_foreign_key "snapshot_subscribers", "subscribers"
   add_foreign_key "subscriber_custom_fields", "custom_fields"
   add_foreign_key "subscriber_custom_fields", "subscribers"
   add_foreign_key "subscribers", "users"

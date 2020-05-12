@@ -17,20 +17,20 @@ class SendBroadcastWorker
 
     puts "emails_sent = #{broadcast.message.emails_sent}, audience_size = #{broadcast.message.audience_size}"
 
-    return unless broadcast.message.emails_sent == broadcast.message.audience_size
+    return unless broadcast.message.done_sending?
 
     puts 'Sent emails equals audience size, changing status to sent'
     broadcast.update_attribute(:status, 'sent')
   end
 
   def send_emails(broadcast, retry_delay)
-    broadcast.subscribers.each do |subscriber|
+    broadcast.snapshot_subscribers.each do |s_s|
       break if broadcast_canceled?(broadcast)
 
-      next if broadcast.message.sent_messages.find_by(subscriber_id: subscriber.id)
+      next if broadcast.message.sent_messages.find_by(subscriber_id: s_s.subscriber_id)
 
-      sent_message = SentMessage.create_from_broadcast(broadcast, subscriber)
-      error_message = send_email(subscriber, broadcast, sent_message)
+      sent_message = SentMessage.create_from_broadcast(broadcast, s_s)
+      error_message = send_email(s_s.subscriber, broadcast, sent_message)
 
       handle_sent_message(sent_message, error_message, broadcast.id, retry_delay)
       break if throttling_error?(error_message)
@@ -53,6 +53,8 @@ class SendBroadcastWorker
   end
 
   def send_email(subscriber, broadcast, sent_message)
+    return '' if sent_message.nil?
+
     puts "Sending email to subscriber with ID: #{subscriber.id}, email: #{subscriber.email}"
     mail = sent_message.generate_email
     mail.delivery_method.settings.merge! custom_smtp_settings(broadcast.user)

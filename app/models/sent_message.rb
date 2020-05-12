@@ -65,11 +65,13 @@ class SentMessage < ApplicationRecord
     message.click_rule&.trigger_event(subscriber)
   end
 
-  def self.create_from_broadcast(broadcast, subscriber)
-    puts "Creating sent_message for subscriber with ID: #{subscriber.id}, email: #{subscriber.email}"
+  def self.create_from_broadcast(broadcast, snapshot_subscriber)
+    return if snapshot_subscriber.subscriber.nil?
+
     broadcast.message.increment!(:emails_sent)
+    snapshot_subscriber.update(status: 'done')
     broadcast.message.sent_messages.create(
-      subscriber_id: subscriber.id, status: 'sent'
+      subscriber_id: snapshot_subscriber.subscriber_id, status: 'sent'
     )
   end
 end

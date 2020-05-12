@@ -20,10 +20,7 @@ class BroadcastsController < ApplicationController
 
   # GET /broadcasts/new
   def new
-    message = current_user.messages.create(
-      from: current_user.default_from,
-      audience_size: current_user.subscribers.count
-    )
+    message = init_new_message
     broadcast = Broadcast.create(
       message_id: message.id,
       user_id: current_user.id,
@@ -58,7 +55,7 @@ class BroadcastsController < ApplicationController
   def update
     respond_to do |format|
       if @broadcast.update(broadcast_params)
-        @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
+        refresh_snapshot_subscribers
         save_message_rules(@broadcast.message)
         send_or_schedule_broadcast
         format.html { redirect_to broadcasts_path, notice: 'Broadcast was successfully updated.' }
@@ -97,7 +94,7 @@ class BroadcastsController < ApplicationController
       operator: params[:filter_operator],
       value: params[:filter_value]
     )
-    @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
+    refresh_snapshot_subscribers
     redirect_to edit_broadcast_path(@broadcast)
   end
 
@@ -126,6 +123,17 @@ class BroadcastsController < ApplicationController
     end
   end
 
+  def init_new_message
+    message = current_user.messages.create(
+      from: current_user.default_from,
+      audience_size: current_user.subscribers.count
+    )
+    current_user.subscribers.each do |s|
+      message.snapshot_subscribers.create(subscriber_id: s.id, status: 'pending')
+    end
+    message
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def broadcast_params
     bp = params.require(:broadcast).permit(
@@ -152,5 +160,13 @@ class BroadcastsController < ApplicationController
     rule.action_class = rule_arr[0]
     rule.action_id = rule_arr[1]
     rule.save
+  end
+
+  def refresh_snapshot_subscribers
+    @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
+    @broadcast.message.snapshot_subscribers.destroy_all
+    @broadcast.subscribers.each do |s|
+      @broadcast.message.snapshot_subscribers.create(subscriber_id: s.id, status: 'pending')
+    end
   end
 end
