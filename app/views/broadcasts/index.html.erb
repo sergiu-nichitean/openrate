@@ -55,7 +55,7 @@
       </thead>
 
       <tbody>
-        <% @drafts.each do |broadcast| %>
+        <% current_user.broadcasts.drafts.each do |broadcast| %>
           <tr>
             <td><%= broadcast.message.subject %></td>
             <td><%= broadcast.created_at %></td>
