@@ -6,7 +6,6 @@ class BroadcastsController < ApplicationController
 
   # GET /broadcasts
   # GET /broadcasts.json
-  # TODO: bug: percentage for opens, clicks etc is int, not float
   def index; end
 
   # GET /broadcasts/1
