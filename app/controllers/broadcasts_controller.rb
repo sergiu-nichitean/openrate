@@ -6,13 +6,8 @@ class BroadcastsController < ApplicationController
 
   # GET /broadcasts
   # GET /broadcasts.json
-  def index
-    @sending = current_user.broadcasts.where(status: :to_send)
-    @drafts = current_user.broadcasts.where(status: :draft)
-    @scheduled = current_user.broadcasts.where(status: :scheduled)
-    @sent = current_user.broadcasts.where(status: :sent).order(send_at: :desc)
-    @canceled = current_user.broadcasts.where(status: :canceled)
-  end
+  # TODO: bug: percentage for opens, clicks etc is int, not float
+  def index; end
 
   # GET /broadcasts/1
   # GET /broadcasts/1.json

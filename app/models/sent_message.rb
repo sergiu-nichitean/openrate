@@ -32,6 +32,7 @@ class SentMessage < ApplicationRecord
     "#{footer} <img src=\"#{host}/trackpx/#{id}/openrateio.jpg\">"
   end
 
+  # TODO: 0. Click track not working for YOUTUBE and others with GET vars
   def click_track_url(url)
     "https://openrate.io/trackcl/#{id}?url=#{CGI.escape(url)}"
   end
