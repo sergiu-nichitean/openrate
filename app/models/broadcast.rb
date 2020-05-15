@@ -38,11 +38,11 @@ class Broadcast < ApplicationRecord
   end
 
   def clicks
-    message.opens.to_i
+    message.clicks.to_i
   end
 
   def clicks_percentage
-    percentage_from_total(opens)
+    percentage_from_total(clicks)
   end
 
   def unsubscribes

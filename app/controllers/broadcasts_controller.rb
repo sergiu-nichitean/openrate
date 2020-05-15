@@ -12,6 +12,7 @@ class BroadcastsController < ApplicationController
   # GET /broadcasts/1.json
   def show; end
 
+  # TODO: bug: /broadcasts/new hangs on prod
   # GET /broadcasts/new
   def new
     message = init_new_message
