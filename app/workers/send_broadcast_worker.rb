@@ -11,15 +11,11 @@ class SendBroadcastWorker
       broadcast.update_attribute(:status, 'to_send')
     end
 
-    puts "Broadcast audience: #{broadcast.subscribers.map(&:email).join("\n")}"
-
+    broadcast.init_snapshot_subscribers
     send_emails(broadcast, retry_delay)
-
-    puts "emails_sent = #{broadcast.message.emails_sent}, audience_size = #{broadcast.message.audience_size}"
 
     return unless broadcast.message.done_sending?
 
-    puts 'Sent emails equals audience size, changing status to sent'
     broadcast.update_attribute(:status, 'sent')
   end
 

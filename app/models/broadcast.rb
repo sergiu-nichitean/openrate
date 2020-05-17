@@ -69,6 +69,10 @@ class Broadcast < ApplicationRecord
     result
   end
 
+  def init_snapshot_subscribers
+    message.init_snapshot_subscribers(subscribers)
+  end
+
   def snapshot_subscribers
     message.snapshot_subscribers
   end

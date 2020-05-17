@@ -12,7 +12,6 @@ class BroadcastsController < ApplicationController
   # GET /broadcasts/1.json
   def show; end
 
-  # TODO: bug: /broadcasts/new hangs on prod
   # GET /broadcasts/new
   def new
     message = init_new_message
@@ -50,7 +49,7 @@ class BroadcastsController < ApplicationController
   def update
     respond_to do |format|
       if @broadcast.update(broadcast_params)
-        refresh_snapshot_subscribers
+        @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
         save_message_rules(@broadcast.message)
         send_or_schedule_broadcast
         format.html { redirect_to broadcasts_path, notice: 'Broadcast was successfully updated.' }
@@ -89,7 +88,7 @@ class BroadcastsController < ApplicationController
       operator: params[:filter_operator],
       value: params[:filter_value]
     )
-    refresh_snapshot_subscribers
+    @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
     redirect_to edit_broadcast_path(@broadcast)
   end
 
@@ -123,9 +122,6 @@ class BroadcastsController < ApplicationController
       from: current_user.default_from,
       audience_size: current_user.subscribers.count
     )
-    current_user.subscribers.each do |s|
-      message.snapshot_subscribers.create(subscriber_id: s.id, status: 'pending')
-    end
     message
   end
 
@@ -155,13 +151,5 @@ class BroadcastsController < ApplicationController
     rule.action_class = rule_arr[0]
     rule.action_id = rule_arr[1]
     rule.save
-  end
-
-  def refresh_snapshot_subscribers
-    @broadcast.message.update_attribute(:audience_size, @broadcast.subscribers.count)
-    @broadcast.message.snapshot_subscribers.destroy_all
-    @broadcast.subscribers.each do |s|
-      @broadcast.message.snapshot_subscribers.create(subscriber_id: s.id, status: 'pending')
-    end
   end
 end

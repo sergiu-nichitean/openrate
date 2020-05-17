@@ -25,6 +25,14 @@ class Message < ApplicationRecord
     "#{click_rule.action_class}-#{click_rule.action_id}"
   end
 
+  def init_snapshot_subscribers(subscribers)
+    arr = []
+    subscribers.each do |s|
+      arr << { message_id: id, subscriber_id: s.id, status: 'pending' }
+    end
+    SnapshotSubscriber.import arr
+  end
+
   def done_sending?
     snapshot_subscribers.where(status: 'pending').empty?
   end
