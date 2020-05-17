@@ -1,7 +1,7 @@
 class Broadcast < ApplicationRecord
   belongs_to :user
   belongs_to :message
-  has_many :filters
+  has_many :filters, dependent: :destroy
 
   scope :sending, -> { where(status: :to_send) }
   scope :drafts, -> { where(status: :draft) }

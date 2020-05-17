@@ -1,6 +1,8 @@
 class SendBroadcastWorker
   include Sidekiq::Worker
 
+  # TODO: 0b. send emails faster (store sent messages in memory, use active record import)
+
   def perform(broadcast_id, retry_delay = 1)
     puts 'Starting SendBroadcastWorker'
 
