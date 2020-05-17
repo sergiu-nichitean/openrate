@@ -1,6 +1,7 @@
 class SendBroadcastWorker
   include Sidekiq::Worker
 
+  # TODO: 0a. snapshot subscribers not working OK
   # TODO: 0b. send emails faster (store sent messages in memory, use active record import)
 
   def perform(broadcast_id, retry_delay = 1)
@@ -13,22 +14,21 @@ class SendBroadcastWorker
       broadcast.update_attribute(:status, 'to_send')
     end
 
-    broadcast.init_snapshot_subscribers
     send_emails(broadcast, retry_delay)
 
-    return unless broadcast.message.done_sending?
+    return unless broadcast.emails_sent == broadcast.audience_size
 
     broadcast.update_attribute(:status, 'sent')
   end
 
   def send_emails(broadcast, retry_delay)
-    broadcast.snapshot_subscribers.each do |s_s|
+    broadcast.subscribers.each do |subscriber|
       break if broadcast_canceled?(broadcast)
 
-      next if broadcast.message.sent_messages.find_by(subscriber_id: s_s.subscriber_id)
+      next if broadcast.message.sent_messages.find_by(subscriber_id: subscriber.id)
 
-      sent_message = SentMessage.create_from_broadcast(broadcast, s_s)
-      error_message = send_email(s_s.subscriber, broadcast, sent_message)
+      sent_message = SentMessage.create_from_broadcast(broadcast, subscriber)
+      error_message = send_email(subscriber, broadcast, sent_message)
 
       handle_sent_message(sent_message, error_message, broadcast.id, retry_delay)
       break if throttling_error?(error_message)
