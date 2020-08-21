@@ -11,6 +11,8 @@ class SubscribersController < ApplicationController
   # GET /subscribers
   # GET /subscribers.json
 
+  # TODO: 0. click track not working with get vars
+  # TODO: 0b. change broadcast status when sidekiq job is done
   # TODO: 1. Pagination for subscribers
   # TODO: 2. Filter subscribers (flow from broadcasts, maybe drop custom fields for now)
   # TODO: 3. Bulk actions: add tag, remove tag, delete, export
