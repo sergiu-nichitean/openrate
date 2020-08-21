@@ -22,7 +22,7 @@ class SendBroadcastWorker
   end
 
   def send_emails(broadcast, retry_delay)
-    broadcast.subscribers.order(id: :desc).each do |subscriber|
+    broadcast.subscribers.each do |subscriber|
       break if broadcast_canceled?(broadcast)
 
       next if broadcast.message.sent_messages.find_by(subscriber_id: subscriber.id)

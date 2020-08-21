@@ -58,9 +58,9 @@ class Broadcast < ApplicationRecord
   end
 
   def subscribers
-    return user.subscribers if filters.empty?
+    return user.subscribers.order(id: :desc) if filters.empty?
 
-    result = user.subscribers.includes(:tags)
+    result = user.subscribers.order(id: :desc).includes(:tags)
 
     filters.each do |f|
       result = f.narrow_query(result)
