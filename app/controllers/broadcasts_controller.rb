@@ -1,6 +1,6 @@
 class BroadcastsController < ApplicationController
   before_action :set_broadcast, only: %i[
-    show edit update destroy cancel add_filter delete_filter
+    show edit update destroy cancel add_filter delete_filter set_tag_for_results
   ]
   before_action :set_active_menu
 
@@ -10,7 +10,12 @@ class BroadcastsController < ApplicationController
 
   # GET /broadcasts/1
   # GET /broadcasts/1.json
-  def show; end
+  def show
+    @filters = params[:filters]
+    @sent_messages_scope = @broadcast.message.sent_messages
+    @sent_messages_scope = @sent_messages_scope.where(status: @filters[:status]) if @filters
+    @sent_messages = @sent_messages_scope.order(:sent_at).page params[:page]
+  end
 
   # GET /broadcasts/new
   def new
@@ -76,6 +81,20 @@ class BroadcastsController < ApplicationController
     redirect_to broadcasts_path
   end
 
+  def set_tag_for_results
+    sent_messages = @broadcast.message.sent_messages.where(id: params[:scope].split(','))
+    tag = current_user.tags.find(params[:subscribers_tag])
+    # TODO: use activerecord import here
+    sent_messages.map(&:subscriber).each do |s|
+      s.tags << tag
+      s.save
+    end
+    redirect_to(
+      edit_broadcast_path(@broadcast),
+      notice: "Tag was successfully set for current results: #{tag.name}"
+    )
+  end
+
   def filter_value_selector
     @relation = params['relation']
     @operator = params['operator']
@@ -101,7 +120,7 @@ class BroadcastsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_broadcast
-    @broadcast = Broadcast.find(params[:id])
+    @broadcast = current_user.broadcasts.find(params[:id])
   end
 
   def set_active_menu

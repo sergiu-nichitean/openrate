@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2020_05_11_203611) do
 
-  create_table "broadcasts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "broadcasts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "message_id"
     t.integer "status"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["user_id"], name: "index_broadcasts_on_user_id"
   end
 
-  create_table "custom_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "custom_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["user_id"], name: "index_custom_fields_on_user_id"
   end
 
-  create_table "filters", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "filters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "broadcast_id", null: false
     t.string "type"
     t.string "operator"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["broadcast_id"], name: "index_filters_on_broadcast_id"
   end
 
-  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.text "subject"
     t.text "content"
     t.bigint "user_id"
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
-  create_table "rules", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "rules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "message_id", null: false
     t.integer "trigger"
     t.string "action_class"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["message_id"], name: "index_rules_on_message_id"
   end
 
-  create_table "sent_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "sent_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "message_id"
     t.bigint "subscriber_id"
     t.integer "status"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["subscriber_id"], name: "index_sent_messages_on_subscriber_id"
   end
 
-  create_table "sequence_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "sequence_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "message_id"
     t.bigint "sequence_id"
     t.integer "order"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["sequence_id"], name: "index_sequence_messages_on_sequence_id"
   end
 
-  create_table "sequence_subscribers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "sequence_subscribers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "sequence_id"
     t.bigint "subscriber_id"
     t.datetime "created_at", null: false
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["subscriber_id"], name: "index_sequence_subscribers_on_subscriber_id"
   end
 
-  create_table "sequences", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "sequences", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["user_id"], name: "index_sequences_on_user_id"
   end
 
-  create_table "snapshot_subscribers", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "snapshot_subscribers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "subscriber_id", null: false
     t.bigint "message_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["subscriber_id"], name: "index_snapshot_subscribers_on_subscriber_id"
   end
 
-  create_table "subscriber_custom_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "subscriber_custom_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "subscriber_id"
     t.bigint "custom_field_id"
     t.text "value"
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["subscriber_id"], name: "index_subscriber_custom_fields_on_subscriber_id"
   end
 
-  create_table "subscriber_imports", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "subscriber_imports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id"
     t.string "file_path"
     t.datetime "created_at", precision: 6, null: false
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["user_id"], name: "index_subscriber_imports_on_user_id"
   end
 
-  create_table "subscribers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "subscribers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "email"
@@ -147,14 +147,14 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["user_id"], name: "index_subscribers_on_user_id"
   end
 
-  create_table "subscribers_tags", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "subscribers_tags", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "subscriber_id"
     t.bigint "tag_id"
     t.index ["subscriber_id"], name: "index_subscribers_tags_on_subscriber_id"
     t.index ["tag_id"], name: "index_subscribers_tags_on_tag_id"
   end
 
-  create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_203611) do
     t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "email", default: "", null: false

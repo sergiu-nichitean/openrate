@@ -2,6 +2,48 @@
 
 <h2>Emails sent</h2>
 
+<%= paginate @sent_messages %>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Filters</h5>
+    <p class="card-text">
+      <%= form_tag({ action: 'show', id: @broadcast.id }, method: 'get') do %>
+        <div class="form-group">
+          <label for="sent_message_status">Status</label>
+          <select class="form-control" id="sent_message_status" name="filters[status]">
+            <option<%= ' selected="selected"' if @filters && @filters[:status] == 'sent' %> value="sent">Sent</option>
+            <option<%= ' selected="selected"' if @filters && @filters[:status] == 'opened' %> value="opened">Opened</option>
+            <option<%= ' selected="selected"' if @filters && @filters[:status] == 'error' %> value="error">Error</option>
+            <option<%= ' selected="selected"' if @filters && @filters[:status] == 'clicked' %> value="clicked">Clicked</option>
+          </select>
+        </div>
+        <%= submit_tag 'Set Filters', class: 'btn btn-primary' %>
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Set tag for current results</h5>
+    <p class="card-text">
+      <%= form_tag(action: 'set_tag_for_results', id: @broadcast.id) do %>
+        <%= hidden_field_tag 'scope', @sent_messages_scope.map(&:id).join(',') %>
+        <div class="form-group">
+          <label for="subscribers_tag">Tag</label>
+          <select class="form-control" id="subscribers_tag" name="subscribers_tag">
+            <% current_user.tags.each do |tag| %>
+              <option value="<%= tag.id %>"><%= tag.name %></option>
+            <% end %>
+          </select>
+        </div>
+        <%= submit_tag 'Set Tag', class: 'btn btn-primary' %>
+      <% end %>
+    </p>
+  </div>
+</div>
+
 <div class="responsive-table">
   <table class="table table-bordered table-hover">
     <thead>
@@ -14,7 +56,7 @@
     </thead>
 
     <tbody>
-      <% @broadcast.message.sent_messages.each do |sent_message| %>
+      <% @sent_messages.each do |sent_message| %>
         <tr>
           <td><%= sent_message.id %></td>
           <td><%= sent_message.subscriber.email %></td>

@@ -4,6 +4,8 @@ class SentMessage < ApplicationRecord
 
   enum status: %i[sent opened error clicked]
 
+  paginates_per 100
+
   def update_error(error_message)
     self.status = :error
     self.error = error_message
